@@ -9,6 +9,7 @@ import ups.registro_usuarios_ms.services.EstudianteService;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/micro1/estudiante/")
@@ -32,6 +33,14 @@ public class EstudianteController {
         return ResponseEntity.ok(estudianteService.listEstudiantes());
 
     }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<Estudiante> buscarEstudiante(@RequestParam String cedula) {
+        Optional<Estudiante> estudianteEncontrado = estudianteService.buscarEstudiante(cedula);
+        return estudianteEncontrado.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+
 
     //pendiente el delete
 

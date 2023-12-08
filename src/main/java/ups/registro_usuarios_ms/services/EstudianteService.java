@@ -6,6 +6,7 @@ import ups.registro_usuarios_ms.model.Estudiante;
 import ups.registro_usuarios_ms.repository.EstudianteRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -24,4 +25,15 @@ public class EstudianteService {
     public void delete(Estudiante estudiante){
         estudianteRepository.delete(estudiante);
     }
+
+    public Optional<Estudiante> buscarEstudiante(String cedula) {
+        try {
+            List<Estudiante> estudianteEncontrados = estudianteRepository.findByCedulaIgnoreCase(cedula);
+            return estudianteEncontrados.isEmpty() ? Optional.empty() : Optional.of(estudianteEncontrados.get(0));
+        } catch (Exception e) {
+            System.err.println("Error al buscar estudiante por cédula: " + cedula + ", " + e.getMessage());
+            return Optional.empty();
+        }
+    }
+
 }
